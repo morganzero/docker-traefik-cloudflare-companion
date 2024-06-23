@@ -62,7 +62,7 @@ RUN set -x && \
                 python3-dev && \
     rm -rf /root/.cache /root/.cargo
 
-COPY install/ /install/
+COPY install /install/
 
 # Ensure the virtual environment is activated when the container starts
 ENV PATH="/opt/venv/bin:$PATH"
