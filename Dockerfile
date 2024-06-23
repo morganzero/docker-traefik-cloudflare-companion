@@ -17,9 +17,9 @@ RUN set -x && \
             -G tcc \
             -g "tcc" \
             -u 8080 tcc && \
-    package update && \
-    package upgrade && \
-    package install .tcc-build-deps \
+    apk update && \
+    apk upgrade && \
+    apk add --no-cache \
                 cargo \
                 gcc \
                 libffi-dev \
@@ -29,7 +29,7 @@ RUN set -x && \
                 py3-setuptools \
                 py3-wheel \
                 python3-dev && \
-    package install .tcc-run-deps \
+    apk add --no-cache \
                 docker-py \
                 py3-beautifulsoup4 \
                 py3-certifi \
@@ -50,8 +50,16 @@ RUN set -x && \
             get-docker-secret \
             requests && \
     deactivate && \
-    package remove .tcc-build-deps && \
-    package cleanup && \
+    apk del \
+                cargo \
+                gcc \
+                libffi-dev \
+                musl-dev \
+                openssl-dev \
+                py3-pip \
+                py3-setuptools \
+                py3-wheel \
+                python3-dev && \
     rm -rf /root/.cache /root/.cargo
 
 COPY install/ /install/
