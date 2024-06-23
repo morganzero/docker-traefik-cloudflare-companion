@@ -63,11 +63,8 @@ RUN set -x && \
     rm -rf /var/cache/apk/* /root/.cache /root/.cargo
 
 COPY install/ /install/
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
 
 # Ensure the virtual environment is activated when the container starts
 ENV PATH="/opt/venv/bin:$PATH"
 
-ENTRYPOINT ["/entrypoint.sh"]
 CMD ["/bin/sh"]
