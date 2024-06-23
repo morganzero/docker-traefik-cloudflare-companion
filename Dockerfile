@@ -9,7 +9,7 @@ ENV CONTAINER_ENABLE_MESSAGING=FALSE \
     CONTAINER_PROCESS_RUNAWAY_PROTECTOR=FALSE \
     IMAGE_NAME="morganzero/docker-traefik-cloudflare-companion" \
     IMAGE_REPO_URL="https://github.com/morganzero/docker-traefik-cloudflare-companion/" \
-    TZ="Etc/GMT"  # Set the timezone via environment variable
+    TZ="Etc/GMT"
 
 RUN source /assets/functions/00-container && \
     set -x && \
@@ -56,7 +56,7 @@ RUN source /assets/functions/00-container && \
     package cleanup && \
     rm -rf /root/.cache /root/.cargo
 
-COPY install /
+COPY install/ /install/
 
 # Ensure the virtual environment is activated when the container starts
 ENV PATH="/opt/venv/bin:$PATH"
