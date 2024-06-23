@@ -1,12 +1,15 @@
 #!/bin/sh
 
-# Skip timezone settings
-echo "Skipping timezone settings"
+# Override any timezone setting functions
+if [ -f /assets/functions/00-container ]; then
+    sed -i 's|cp /usr/share/zoneinfo/.*|echo "Skipping timezone setting"|' /assets/functions/00-container
+    sed -i 's|echo .* > /etc/timezone|echo "Skipping timezone setting"|' /assets/functions/00-container
+fi
 
-# Execute the original entrypoint script if needed
+# Continue with the original entrypoint
 if [ -f /assets/functions/00-container ]; then
     source /assets/functions/00-container
 fi
 
-# Run the specified command
+# Execute the specified command
 exec "$@"
