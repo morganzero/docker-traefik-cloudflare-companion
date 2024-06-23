@@ -7,8 +7,8 @@ LABEL maintainer="Dave Conroy (github.com/tiredofit)"
 ENV CONTAINER_ENABLE_MESSAGING=FALSE \
     CONTAINER_ENABLE_SCHEDULING=FALSE \
     CONTAINER_PROCESS_RUNAWAY_PROTECTOR=FALSE \
-    IMAGE_NAME="tiredofit/traefik-cloudflare-companion" \
-    IMAGE_REPO_URL="https://github.com/tiredofit/docker-traefik-cloudflare-companion/"
+    IMAGE_NAME="morganzero/docker-traefik-cloudflare-companion" \
+    IMAGE_REPO_URL="https://github.com/morganzero/docker-traefik-cloudflare-companion/"
 
 RUN source /assets/functions/00-container && \
     set -x && \
@@ -27,7 +27,7 @@ RUN source /assets/functions/00-container && \
                 libffi-dev \
                 musl-dev \
                 openssl-dev \
-                py-pip \
+                py3-pip \
                 py3-setuptools \
                 py3-wheel \
                 python3-dev \
@@ -47,14 +47,22 @@ RUN source /assets/functions/00-container && \
                 py3-yaml \
                 python3 \
                 && \
+    python3 -m venv /opt/venv && \
+    . /opt/venv/bin/activate && \
     pip install \
             cloudflare==2.19.* \
             get-docker-secret \
             requests \
             && \
+    deactivate && \
     package remove .tcc-build-deps && \
     package cleanup && \
     rm -rf /root/.cache \
            /root/.cargo
 
-COPY install /
+COPY install / # buildkit
+
+# Ensure the virtual environment is activated when the container starts
+ENV PATH="/opt/venv/bin:$PATH"
+
+CMD ["/bin/sh"]
