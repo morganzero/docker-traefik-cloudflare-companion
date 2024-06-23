@@ -60,7 +60,7 @@ RUN source /assets/functions/00-container && \
     rm -rf /root/.cache \
            /root/.cargo
 
-COPY install / # Ensure this directory exists in the build context
+COPY install/ /install/ # Ensure this directory exists in the build context
 
 # Ensure the virtual environment is activated when the container starts
 ENV PATH="/opt/venv/bin:$PATH"
