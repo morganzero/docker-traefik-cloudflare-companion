@@ -1,21 +1,22 @@
 #!/bin/sh
 
-# Define a wrapper function to skip timezone settings
+# Custom startup script that skips timezone setting
+
+# Function to skip timezone settings
 timezone_override() {
     echo "Skipping timezone setting"
 }
 
-# Source the original script but skip timezone settings
+# Override functions in /assets/functions/00-container
+if [ -f /assets/functions/00-container ]; then
+    sed -i 's|cp /usr/share/zoneinfo/.*|echo "Skipping timezone setting"|' /assets/functions/00-container
+    sed -i 's|echo .* > /etc/timezone|echo "Skipping timezone setting"|' /assets/functions/00-container
+fi
+
+# Execute the original script if it exists
 if [ -f /assets/functions/00-container ]; then
     . /assets/functions/00-container
 fi
-
-# Replace timezone setting calls with the override in the sourced script
-sed -i 's|cp /usr/share/zoneinfo/.*|timezone_override|' /assets/functions/00-container
-sed -i 's|echo .* > /etc/timezone|timezone_override|' /assets/functions/00-container
-
-# Execute the modified script
-. /assets/functions/00-container
 
 # Run the specified command
 exec "$@"
