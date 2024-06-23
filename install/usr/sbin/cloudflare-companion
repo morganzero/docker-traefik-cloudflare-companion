@@ -178,7 +178,7 @@ def point_domain(name, domain_infos):
                 u'type': RC_TYPE,
                 u'name': name,
                 u'content': domain_info['target_domain'],
-                u'ttl': domain_info['ttl'],
+                u'ttl': int(domain_info['ttl']),  # Ensure TTL is an integer
                 u'proxied': domain_info['proxied']
             }
             if REFRESH_ENTRIES:
