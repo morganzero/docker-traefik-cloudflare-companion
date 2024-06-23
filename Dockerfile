@@ -19,7 +19,6 @@ RUN source /assets/functions/00-container && \
             -g "tcc" \
             -u 8080 tcc \
             && \
-    \
     package update && \
     package upgrade && \
     package install .tcc-build-deps \
@@ -33,7 +32,6 @@ RUN source /assets/functions/00-container && \
                 py3-wheel \
                 python3-dev \
                 && \
-    \
     package install .tcc-run-deps \
                 docker-py \
                 py3-beautifulsoup4 \
@@ -49,13 +47,11 @@ RUN source /assets/functions/00-container && \
                 py3-yaml \
                 python3 \
                 && \
-    \
-    pip --break-system-packages install \
+    pip install \
             cloudflare==2.19.* \
             get-docker-secret \
             requests \
             && \
-    \
     package remove .tcc-build-deps && \
     package cleanup && \
     rm -rf /root/.cache \
