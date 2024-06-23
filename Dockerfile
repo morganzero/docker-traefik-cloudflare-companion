@@ -8,11 +8,9 @@ ENV CONTAINER_ENABLE_MESSAGING=FALSE \
     CONTAINER_ENABLE_SCHEDULING=FALSE \
     CONTAINER_PROCESS_RUNAWAY_PROTECTOR=FALSE \
     IMAGE_NAME="morganzero/docker-traefik-cloudflare-companion" \
-    IMAGE_REPO_URL="https://github.com/morganzero/docker-traefik-cloudflare-companion/" \
-    TZ="Etc/GMT"
+    IMAGE_REPO_URL="https://github.com/morganzero/docker-traefik-cloudflare-companion/"
 
-RUN source /assets/functions/00-container && \
-    set -x && \
+RUN set -x && \
     addgroup -S -g 8080 tcc && \
     adduser -D -S -s /sbin/nologin \
             -h /dev/null \
