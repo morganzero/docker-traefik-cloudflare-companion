@@ -1,13 +1,15 @@
 #!/bin/sh
 
-# Skip timezone setting by redefining the related commands
-sed -i 's|cp /usr/share/zoneinfo/.*|echo "Skipping timezone setting"|' /assets/functions/00-container
-sed -i 's|echo .* > /etc/timezone|echo "Skipping timezone setting"|' /assets/functions/00-container
+# Create a temporary script that comments out the timezone settings
+TEMP_SCRIPT=$(mktemp)
 
-# Execute the original script
-if [ -f /assets/functions/00-container ]; then
-    . /assets/functions/00-container
-fi
+sed 's|cp /usr/share/zoneinfo/.*|# Skipping timezone setting|; s|echo .* > /etc/timezone|# Skipping timezone setting|' /assets/functions/00-container > $TEMP_SCRIPT
+
+# Source the modified script
+. $TEMP_SCRIPT
+
+# Clean up the temporary script
+rm -f $TEMP_SCRIPT
 
 # Run the specified command
 exec "$@"
