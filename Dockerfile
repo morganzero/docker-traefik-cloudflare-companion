@@ -19,6 +19,7 @@ RUN source /assets/functions/00-container && \
             -g "tcc" \
             -u 8080 tcc \
             && \
+    \
     package update && \
     package upgrade && \
     package install .tcc-build-deps \
@@ -27,11 +28,12 @@ RUN source /assets/functions/00-container && \
                 libffi-dev \
                 musl-dev \
                 openssl-dev \
-                py3-pip \
+                py-pip \
                 py3-setuptools \
                 py3-wheel \
                 python3-dev \
                 && \
+    \
     package install .tcc-run-deps \
                 docker-py \
                 py3-beautifulsoup4 \
@@ -47,22 +49,16 @@ RUN source /assets/functions/00-container && \
                 py3-yaml \
                 python3 \
                 && \
-    python3 -m venv /opt/venv && \
-    . /opt/venv/bin/activate && \
-    pip install \
+    \
+    pip --break-system-packages install \
             cloudflare==2.19.* \
             get-docker-secret \
             requests \
             && \
-    deactivate && \
+    \
     package remove .tcc-build-deps && \
     package cleanup && \
     rm -rf /root/.cache \
            /root/.cargo
 
-COPY install/ /install/ # Ensure this directory exists in the build context
-
-# Ensure the virtual environment is activated when the container starts
-ENV PATH="/opt/venv/bin:$PATH"
-
-CMD ["/bin/sh"]
+COPY install /
